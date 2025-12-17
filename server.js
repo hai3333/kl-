@@ -20,6 +20,7 @@ const initDB = async () => {
     console.log('✅ MySQL Database connected successfully.');
     
     // 2. 自动创建项目表 (如果不存在)
+    // 使用 ENGINE=InnoDB 和 DEFAULT CHARSET=utf8mb4，完美支持中文
     const createTableQuery = `
       CREATE TABLE IF NOT EXISTS projects (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,10 +30,10 @@ const initDB = async () => {
         category VARCHAR(100) NOT NULL,
         image_url LONGTEXT,
         created_at BIGINT NOT NULL
-      ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `;
     await db.query(createTableQuery);
-    console.log('✅ Database initialized: "projects" table checked/created.');
+    console.log('✅ Database initialized: "projects" table checked/created (utf8mb4).');
   } catch (err) {
     console.error('❌ Database initialization failed:', err.message);
     console.error('👉 Please ensure MySQL is running and a database named "kailiang_portal" exists.');
