@@ -3,10 +3,11 @@ require('dotenv').config();
 
 // 创建数据库连接池
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '123456', 
-  database: process.env.DB_NAME || 'kailiang_portal',
+  host: '192.168.2.35',
+  port: 3306,
+  user:  'root',
+  password:  '123qwe123', 
+  database:  'kailiang_portal',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
