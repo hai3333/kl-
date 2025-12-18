@@ -7,7 +7,23 @@ interface ProjectCardProps {
   onDelete: (id: string) => void;
 }
 
+const DEFAULT_IMAGES = [
+  'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800', // 芯片/电路
+  'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800', // 网络安全/数据
+  'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800', // 工业4.0/自动化
+  'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800', // 地球/全球化
+  'https://images.unsplash.com/photo-1535378437327-b71280684f00?auto=format&fit=crop&q=80&w=800'  // 智慧城市/全息
+];
+
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onDelete }) => {
+  // Generate a consistent random image based on project ID
+  const getRandomImage = (id: string) => {
+    const index = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return DEFAULT_IMAGES[index % DEFAULT_IMAGES.length];
+  };
+
+  const displayImage = project.imageUrl || getRandomImage(project.id);
+
   const handleDelete = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -26,7 +42,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onDelete }) =
       {/* Image Section */}
       <div className="relative h-48 w-full overflow-hidden bg-gray-100">
         <img 
-          src={project.imageUrl} 
+          src={displayImage} 
           alt={project.name}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
