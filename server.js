@@ -5,7 +5,7 @@ const db = require('./db');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = 3001; // 硬编码端口，不再依赖环境变量
 
 // 中间件
 app.use(cors()); 
@@ -106,6 +106,16 @@ app.delete('/api/projects/:id', async (req, res) => {
     console.error('Error deleting project:', error);
     res.status(500).json({ error: 'Failed to delete project' });
   }
+});
+
+// --- 静态资源托管 (生产环境) ---
+// 1. 托管构建后的前端静态文件 (dist 目录)
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// 2. 处理 SPA 路由：任何未识别的 API 请求都返回 index.html
+// 这样前端路由 (如 /projects/123) 刷新时也能正常工作
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 // 启动服务器前初始化数据库
